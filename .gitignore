@@ -339,5 +339,3 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 *.env
-/Squire/Squire/bot.py
-/Squire/Squire/EmailTest.py
