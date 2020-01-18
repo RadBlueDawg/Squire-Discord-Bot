@@ -12,7 +12,10 @@ Just replace {Your-Token-Here} with whatever your bot token is (Found at [Discor
 All commands should by prefixed with a '!' character when typed into the Discord chat.
 
 ### dum
-The bot will call whoever typed this command in dumb in some manner. I wrote this because I made the big dum.
+The bot will call whoever typed this command in dumb in some manner, determined by randomly pulling a line from a text file. I wrote this because I made the big dum.
+
+### quote
+The bot will either pull a random quote from a text file, or add a specified quote to the text file. The usage of quotes around the added quote is important if you want the whole quote to be added.
 
 ### help
 Outputs help text for each of the commands. Whatever Discord automagically puts together.
