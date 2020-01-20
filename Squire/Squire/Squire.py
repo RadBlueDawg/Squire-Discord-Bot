@@ -58,7 +58,7 @@ async def roll_dice(CTX, *DICE):
 					RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_RESULT[0]}** on a **{DICE[0]}**.'
 	await CTX.send(RESPONSE)
 
-@BOT.command(name='quote', help='Either adds or reads off a random quote. MAKE SURE TO ADD THE QUOTATION MARKS IF YOU\'RE ADDING A QUOTE! (Format: "[quote-text]"')
+@BOT.command(name='quote', help='Either adds or reads off a random quote.')
 async def quote(CTX, *QUOTE):
 	REQUEST_USR = CTX.author
 	log(f'Now running the quote command for {REQUEST_USR}')
@@ -69,9 +69,10 @@ async def quote(CTX, *QUOTE):
 			SELECTED_INDEX = random.choice(range(0, len(LINES)))
 			RESPONSE = LINES[SELECTED_INDEX]
 	else:
+		QUOTE_TEXT = ' '.join(QUOTE)
 		with open(f'{os.getcwd()}/Quotes.txt', 'a') as f:
-			f.write(f'\n{QUOTE[0]}')
-		RESPONSE = f'Added the quote "{QUOTE[0]}" to the list!' 
+			f.write(f'\n{QUOTE_TEXT}')
+		RESPONSE = f'Added the quote "{QUOTE_TEXT}" to the list!' 
 
 	await CTX.send(RESPONSE)
 
@@ -85,7 +86,7 @@ async def dum(CTX):
 		SELECTED_INDEX = random.choice(range(0, len(LINES)))
 		DUM_LINE = LINES[SELECTED_INDEX]
 
-	if DUM_LINE.endswith('.gif') or DUM_LINE.endswith('.png'):
+	if DUM_LINE.endswith('.gif') or DUM_LINE.endswith('.png') or DUM_LINE.endswith('.jpg'):
 		await CTX.send(f'{REQUEST_USR.mention}', file=discord.File(f'Assets\{DUM_LINE}'))
 	else:
 		await CTX.send(f'{REQUEST_USR.mention} {DUM_LINE}')
