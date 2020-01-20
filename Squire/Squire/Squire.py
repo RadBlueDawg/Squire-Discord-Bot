@@ -8,8 +8,8 @@ from dotenv import load_dotenv
 
 def log(MESSAGE):
 	LOCAL_TIME = time.localtime(time.time())
-	TIMESTAMP = f'{LOCAL_TIME.tm_mday}-{LOCAL_TIME.tm_mon}-{LOCAL_TIME.tm_year} {LOCAL_TIME.tm_hour}:{LOCAL_TIME.tm_min}:{LOCAL_TIME.tm_sec}'
-	print(f'\n{TIMESTAMP} {MESSAGE}')
+	TIMESTAMP = f'{LOCAL_TIME.tm_year}-{LOCAL_TIME.tm_mon}-{LOCAL_TIME.tm_mday} {LOCAL_TIME.tm_hour}:{LOCAL_TIME.tm_min}:{LOCAL_TIME.tm_sec}'
+	print(f'{TIMESTAMP} {MESSAGE}')
 
 log('Loading enviroment variables...')
 load_dotenv()
