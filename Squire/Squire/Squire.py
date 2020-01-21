@@ -20,7 +20,7 @@ ANNOUNCEMENT_CHANNEL = os.getenv('ANNOUCMENT_CHANNEL')
 log('Creating bot instance')
 BOT = commands.Bot(command_prefix='!')
 
-@BOT.command(name='r', help='Rolls dice! (Format: [number_of_dice]d[number_of_sides])')
+@BOT.command(name='roll', help='Rolls dice! (Format: [number_of_dice]d[number_of_sides])', aliases=['r', 'R'])
 async def roll_dice(CTX, *DICE):
 	REQUEST_USR = CTX.author
 	log(f'Running the dice roll command for {REQUEST_USR}')
@@ -58,7 +58,7 @@ async def roll_dice(CTX, *DICE):
 					RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_RESULT[0]}** on a **{DICE[0]}**.'
 	await CTX.send(RESPONSE)
 
-@BOT.command(name='quote', help='Either adds or reads off a random quote.')
+@BOT.command(name='quote', help='Either adds or reads off a random quote.', aliases=['q', 'Q'])
 async def quote(CTX, *QUOTE):
 	REQUEST_USR = CTX.author
 	log(f'Now running the quote command for {REQUEST_USR}')
@@ -76,7 +76,7 @@ async def quote(CTX, *QUOTE):
 
 	await CTX.send(RESPONSE)
 
-@BOT.command(name='dum', help='U iz dum.')
+@BOT.command(name='dum', help='U iz dum.', aliases=['d', 'D'])
 async def dum(CTX):
 	REQUEST_USR = CTX.author
 	log(f'Now running the dum command for {REQUEST_USR}')
