@@ -18,14 +18,34 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 ANNOUNCEMENT_CHANNEL = os.getenv('ANNOUCMENT_CHANNEL')
 
 log('Creating bot instance')
-BOT = commands.Bot(command_prefix='!')
+BOT = commands.Bot(('!', 'squire, '))
 
-@BOT.command(name='roll', help='Rolls dice! (Format: [number_of_dice]d[number_of_sides])', aliases=['r', 'R'])
+@BOT.command(name='roll', help='Rolls dice! (Format: [number_of_dice]d[number_of_sides] OR [disadvantage|dis|d] OR [advantage|adv|a])', aliases=['r', 'R'])
 async def roll_dice(CTX, *DICE):
 	REQUEST_USR = CTX.author
 	log(f'Running the dice roll command for {REQUEST_USR}')
 	if not DICE:
 		RESPONSE = f'{REQUEST_USR.mention} needs to learn how to give the correct parameters. (No parameter not given)'
+	elif DICE[0].lower() == 'dis' or DICE[0].lower() == 'd' or DICE[0].lower() == 'disadvantage':
+		DICE_RESULT = [
+			int(random.choice(range(1, 21)))
+			for _ in range(2)
+		]
+
+		if DICE_RESULT[0] < DICE_RESULT[1]:
+			RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_RESULT[0]}** at **disadvantage**. [{DICE_RESULT[0]}, ~~{DICE_RESULT[1]}~~]'
+		else:
+			RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_RESULT[1]}** at **disadvantage**. [~~{DICE_RESULT[0]}~~, {DICE_RESULT[1]}]'
+	elif DICE[0].lower() == 'adv' or DICE[0].lower() == 'a' or DICE[0].lower() == 'advantage':
+		DICE_RESULT = [
+			int(random.choice(range(1, 21)))
+			for _ in range(2)
+		]
+
+		if DICE_RESULT[0] > DICE_RESULT[1]:
+			RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_RESULT[0]}** at **advantage**. [{DICE_RESULT[0]}, ~~{DICE_RESULT[1]}~~]'
+		else:
+			RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_RESULT[1]}** at **advantage**. [~~{DICE_RESULT[0]}~~, {DICE_RESULT[1]}]'
 	else:
 		SEPERATOR_INDEX = DICE[0].lower().find('d')
 
@@ -90,6 +110,18 @@ async def dum(CTX):
 		await CTX.send(f'{REQUEST_USR.mention}', file=discord.File(f'Assets\{DUM_LINE}'))
 	else:
 		await CTX.send(f'{REQUEST_USR.mention} {DUM_LINE}')
+
+@BOT.command(name='yikes', help='Declare a yikes.', aliases=['y', 'Y'])
+async def yikes(CTX):
+	REQUEST_USR = CTX.author
+	log(f'Now running the yikes command for {REQUEST_USR}')
+
+	with open(f'{os.getcwd()}/YikesQuotes.txt', 'r') as f:
+		LINES = f.read().splitlines()
+		SELECTED_INDEX = random.choice(range(0, len(LINES)))
+		YIKES_LINE = LINES[SELECTED_INDEX]
+
+		await CTX.send(f'{REQUEST_USR.mention}', file=discord.File(f'Assets\{YIKES_LINE}'))
 
 @BOT.event
 async def on_ready():
