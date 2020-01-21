@@ -17,10 +17,14 @@ If you're going to use any images/gifs for the `!dum` command, you'll need to ad
 ## Command List
 All commands should by prefixed with a '!' character when typed into the Discord chat.
 
+[This is a parameter]
+
+*[This is an optional parameter]*
+
 ### dum
 The bot will call whoever typed this command in dumb in some manner, determined by randomly pulling a line from a text file called `DumQuotes.txt`. I wrote this because I made the big dum. You can have a reaction image/gif instead of a line of text, though that requires a few extra steps. Put the reaction image of your choice inside the `Assets` folder, and then put the name of the file in `DumQuotes.txt` like any other dum quote.
 
-### quote
+### quote *[quote-text]*
 The bot will either pull a random quote from a text file, or add a specified quote to the text file.
 
 ### help
