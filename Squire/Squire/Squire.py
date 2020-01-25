@@ -20,7 +20,7 @@ ANNOUNCEMENT_CHANNEL = os.getenv('ANNOUCMENT_CHANNEL')
 log('Creating bot instance')
 BOT = commands.Bot(('!', 'squire, '))
 
-@BOT.command(name='roll', help='Rolls dice! (Format: [number_of_dice]d[number_of_sides] OR [disadvantage|dis|d] OR [advantage|adv|a])', aliases=['r', 'R'])
+@BOT.command(name='roll', help='Rolls dice! (See help message for formatting details)\n(Format: [number_of_dice]d[number_of_sides] OR [disadvantage|dis|d] OR [advantage|adv|a])', aliases=['r', 'R'])
 async def roll_dice(CTX, *DICE):
 	REQUEST_USR = CTX.author
 	log(f'Running the dice roll command for {REQUEST_USR}')
@@ -122,6 +122,36 @@ async def yikes(CTX):
 		YIKES_LINE = LINES[SELECTED_INDEX]
 
 		await CTX.send(f'{REQUEST_USR.mention}', file=discord.File(f'Assets\{YIKES_LINE}'))
+
+@BOT.command(name='rollstats', help='Rolls 4d6 and adds the three highest. (See help message for details).\nIt will either roll the number of stat numbers specified, or that standard 6.', aliases=['rs', 'RS'])
+async def roll_stats(CTX, *NUMBER):
+	if not NUMBER:
+		NUM_DICE = 6
+	else:
+		NUM_DICE = int(NUMBER[0])
+
+	RESPONSE = ''
+	COUNT = 0
+	while(COUNT < NUM_DICE):
+		DICE_RESULT = [
+				int(random.choice(range(1, 7)))
+				for _ in range(4)
+			]
+		DICE_RESULT.sort(reverse=True);
+		DICE_TOTAL = int(DICE_RESULT[0]) + int(DICE_RESULT[1]) + int(DICE_RESULT[2])
+		RESPONSE += f'{DICE_TOTAL} ['
+		ROLL_COUNT = 1;
+		for ROLL in DICE_RESULT:
+			if ROLL_COUNT == 4:
+				ROLL = f'~~{ROLL}~~]\n'
+			else:
+				ROLL = f'{ROLL}, '
+			RESPONSE += ROLL
+			ROLL_COUNT += 1
+
+		COUNT += 1
+
+	await CTX.send(RESPONSE)
 
 @BOT.event
 async def on_ready():
