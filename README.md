@@ -11,11 +11,12 @@ Just replace {Your-Token-Here} with whatever your bot token is (Found at [Discor
 Also, for the `!quote` and `!dum` commands to work you'll need to create the following two files in the same directory as the script:
 - Quotes.txt
 - DumQuotes.txt
+- YikesQuotes.txt
 
-If you're going to use any images/gifs for the `!dum` command, you'll need to add a new folder called "Assets" in the same directory as the script file.
+If you're going to use any images/gifs for the `!dum` or `!yikes` command, you'll need to add a new folder called "Assets" in the same directory as the script file.
 
 ## Command List
-All commands should by prefixed with a '!' character when typed into the Discord chat.
+All commands should by prefixed with a '!' character when typed into the Discord chat. Alternatively, commands can be prefixed with the phrase "squire, " in the spirit of bossing the squire around.
 
 [This is a parameter]
 
@@ -30,5 +31,8 @@ The bot will either pull a random quote from a text file, or add a specified quo
 ### help
 Outputs help text for each of the commands. Whatever Discord automagically puts together.
 
-### [roll|r|R] [number-of-dice]d[sides-on-dice]
-This is a dice roller command. Format the parameter like you would usually see dice typed out (ex. 1d20, 8d8, etc.).
+### [roll|r|R] [number-of-dice]d[sides-on-dice] OR [disadvantage|dis|d] OR [advantage|adv|a]
+This is a dice roller command. Format the parameter like you would usually see dice typed out (ex. 1d20, 8d8, etc.). The command can additionally roll two d20s with advantage or disadvantage, depending on which is specified.
+
+### [yikes|y|Y]
+The bot will display an image/gif that evokes the idea of yikes, determined by randomly choosing from a list of files.
