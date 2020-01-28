@@ -15,7 +15,6 @@ def log(MESSAGE):
 log('Loading enviroment variables')
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
-ANNOUNCEMENT_CHANNEL = os.getenv('ANNOUCMENT_CHANNEL')
 
 log('Creating bot instance')
 BOT = commands.Bot(('!', 'squire, '))
@@ -107,7 +106,7 @@ async def dum(CTX):
 		DUM_LINE = LINES[SELECTED_INDEX]
 
 	if DUM_LINE.endswith('.gif') or DUM_LINE.endswith('.png') or DUM_LINE.endswith('.jpg'):
-		await CTX.send(f'{REQUEST_USR.mention}', file=discord.File(f'Assets\{DUM_LINE}'))
+		await CTX.send(f'{REQUEST_USR.mention}', file=discord.File(f'{os.getcwd()}/Assets/{DUM_LINE}'))
 	else:
 		await CTX.send(f'{REQUEST_USR.mention} {DUM_LINE}')
 
@@ -121,7 +120,7 @@ async def yikes(CTX):
 		SELECTED_INDEX = random.choice(range(0, len(LINES)))
 		YIKES_LINE = LINES[SELECTED_INDEX]
 
-		await CTX.send(f'{REQUEST_USR.mention}', file=discord.File(f'Assets\{YIKES_LINE}'))
+		await CTX.send(f'{REQUEST_USR.mention}', file=discord.File(f'{os.getcwd()}/Assets/{YIKES_LINE}'))
 
 @BOT.command(name='rollstats', help='Rolls 4d6 and adds the three highest. (See help message for details).\nIt will either roll the number of stat numbers specified, or that standard 6.', aliases=['rs', 'RS'])
 async def roll_stats(CTX, *NUMBER):
