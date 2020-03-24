@@ -1,5 +1,5 @@
 # Squire-Discord-Bot
-The Squire bot for discord is something I put together for usage on my own personal D&D discord server. In this README, I'll detail the different commands that are available and the setup required if you want to run this bot for yourself.
+The Squire bot for discord is something I put together for usage on my own personal D&D discord server. This README details the different commands that are available and the setup required if you want to run this bot for yourself.
 
 ## Setup
 ### Dependencies
