@@ -2,13 +2,20 @@
 The Squire bot for discord is something I put together for usage on my own personal D&D discord server. In this README, I'll detail the different commands that are available and the setup required if you want to run this bot for yourself.
 
 ## Setup
+### Dependencies
+Before the bot script can be run, you need to make sure the computer you're running it on has Python 3.7 installed. You will also need to install the following packages:
+- python-dotenv
+- discord.py
+
+### Enviroment Variables
 This bot does have one enviroment variable to store the Discord bot token for authentication purposes. All you need to do to get this to run properly is include a file called ".env" in the same directory as the python file with the following text inside it:
 
 `DISCORD_TOKEN={Your-Token-Here}`
 
 Just replace {Your-Token-Here} with whatever your bot token is (Found at [Discord's Developer Portal](https://discordapp.com/developers/applications)).
 
-Also, for the `!quote` and `!dum` commands to work you'll need to create the following two files in the same directory as the script:
+### Required Files and Folders
+For the `!quote`, `!dum`, and `!yikes` commands to work you'll need to create the following files in the same directory as the script:
 - Quotes.txt
 - DumQuotes.txt
 - YikesQuotes.txt
