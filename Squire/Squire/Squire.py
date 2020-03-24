@@ -124,6 +124,8 @@ async def yikes(CTX):
 
 @BOT.command(name='rollstats', help='Rolls 4d6 and adds the three highest. (See help message for details).\nIt will either roll the number of stat numbers specified, or that standard 6.', aliases=['rs', 'RS'])
 async def roll_stats(CTX, *NUMBER):
+	REQUEST_USR = CTX.author
+	log(f'Running the roll stats command for {REQUEST_USR}')
 	if not NUMBER:
 		NUM_DICE = 6
 	else:
