@@ -8,14 +8,16 @@ Before the bot script can be run, you need to make sure the computer you're runn
 - discord.py
 
 ### Enviroment Variables
-This bot does have one enviroment variable to store the Discord bot token for authentication purposes. All you need to do to get this to run properly is include a file called ".env" in the same directory as the python file with the following text inside it:
+This bot has two enviroment variables. The first is used to store the Discord bot token for authentication purposes, while the second is the path to the folder containing the assets for the commands that require external files. All you need to do to get this to run properly is include a file called ".env" in the same directory as the python file with the following text inside it:
 
 `DISCORD_TOKEN={Your-Token-Here}`
 
-Just replace {Your-Token-Here} with whatever your bot token is (Found at [Discord's Developer Portal](https://discordapp.com/developers/applications)).
+`ASSETS_DIRECTORY={Asset-Dir-Path-Here}`
+
+Replace {Your-Token-Here} with whatever your bot token is (Found at [Discord's Developer Portal](https://discordapp.com/developers/applications)). Replace {Asset-Dir-Path-Here} with the path to the directory that will contain all of the external assets. Be sure to format it as the system you're running the script on formats it (i.e. "\" on Windows and "/" on Unix).
 
 ### Required Files and Folders
-For the `!quote`, `!dum`, and `!yikes` commands to work you'll need to create the following files in the same directory as the script:
+For the `!quote`, `!dum`, and `!yikes` commands to work you'll need to create the following files in the assets directory set in the `.env` file:
 - Quotes.txt
 - DumQuotes.txt
 - YikesQuotes.txt
@@ -40,6 +42,9 @@ Outputs help text for each of the commands. Whatever Discord automagically puts 
 
 ### roll|r|R [number-of-dice]d[sides-on-dice] OR [disadvantage|dis|d] OR [advantage|adv|a]
 This is a dice roller command. Format the parameter like you would usually see dice typed out (ex. 1d20, 8d8, etc.). The command can additionally roll two d20s with advantage or disadvantage, depending on which is specified.
+
+### rollstats|rs|RS *[number-of-stat-rolls]*
+This is a special diceroller command. For each 'stat,' 4d6 are rolled and the highest three are added together. The command will roll the number of stats indicated, or a standard 6 by default.
 
 ### yikes|y|Y
 The bot will display an image/gif that evokes the idea of yikes, determined by randomly choosing from a list of files.
