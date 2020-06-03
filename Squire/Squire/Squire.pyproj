@@ -27,9 +27,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".env" />
-    <Content Include="DumQuotes.txt" />
-    <Content Include="Quotes.txt" />
-    <Content Include="YikesQuotes.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
