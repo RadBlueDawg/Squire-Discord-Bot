@@ -34,11 +34,11 @@ All commands should by prefixed with a '!' character when typed into the Discord
 ### dum|d|D
 The bot will call whoever typed this command in dumb in some manner, determined by randomly pulling a line from a text file called `DumQuotes.txt`. I wrote this because I made the big dum. You can have a reaction image/gif instead of a line of text, though that requires a few extra steps. Put the reaction image of your choice inside the `Assets` folder, and then put the name of the file in `DumQuotes.txt` like any other dum quote.
 
-### quote|q|Q *[quote-text]*
-The bot will either pull a random quote from a text file, or add a specified quote to the text file.
-
 ### help
 Outputs help text for each of the commands. Whatever Discord automagically puts together.
+
+### quote|q|Q *[quote-text]*
+The bot will either pull a random quote from a text file, or add a specified quote to the text file.
 
 ### roll|r|R [number-of-dice]d[sides-on-dice] OR [disadvantage|dis|d] OR [advantage|adv|a]
 This is a dice roller command. Format the parameter like you would usually see dice typed out (ex. 1d20, 8d8, etc.). The command can additionally roll two d20s with advantage or disadvantage, depending on which is specified.
