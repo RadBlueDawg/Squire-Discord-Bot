@@ -20,7 +20,7 @@ ASSET_DIR = os.getenv('ASSET_DIRECTORY')
 log('Creating bot instance')
 BOT = commands.Bot(('!', 'squire, '))
 
-@BOT.command(name='roll', help='Rolls dice! (See help message for formatting details)\n(Format: [number_of_dice]d[number_of_sides] OR [disadvantage|dis|d] OR [advantage|adv|a])', aliases=['r', 'R'])
+@BOT.command(name='roll', help='Rolls dice!\n(Format: [number_of_dice]d[number_of_sides] OR [disadvantage|dis|d] OR [advantage|adv|a])', aliases=['r', 'R'])
 async def roll_dice(CTX, *DICE):
 	REQUEST_USR = CTX.author
 	log(f'Running the dice roll command for {REQUEST_USR}')
@@ -123,7 +123,7 @@ async def yikes(CTX):
 
 		await CTX.send(f'{REQUEST_USR.mention}', file=discord.File(f'{ASSET_DIR}/{YIKES_LINE}'))
 
-@BOT.command(name='rollstats', help='Rolls 4d6 and adds the three highest. (See help message for details).\nIt will either roll the number of stat numbers specified, or that standard 6.', aliases=['rs', 'RS'])
+@BOT.command(name='rollstats', help='Rolls 4d6 and adds the three highest.\nIt will either roll the number of stat numbers specified, or that standard 6.', aliases=['rs', 'RS'])
 async def roll_stats(CTX, *NUMBER):
 	REQUEST_USR = CTX.author
 	log(f'Running the roll stats command for {REQUEST_USR}')
