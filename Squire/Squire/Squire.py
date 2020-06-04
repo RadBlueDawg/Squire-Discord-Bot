@@ -15,11 +15,12 @@ def log(MESSAGE):
 log('Loading enviroment variables')
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
+ASSET_DIR = os.getenv('ASSET_DIRECTORY')
 
 log('Creating bot instance')
 BOT = commands.Bot(('!', 'squire, '))
 
-@BOT.command(name='roll', help='Rolls dice! (See help message for formatting details)\n(Format: [number_of_dice]d[number_of_sides] OR [disadvantage|dis|d] OR [advantage|adv|a])', aliases=['r', 'R'])
+@BOT.command(name='roll', help='Rolls dice!\n(Format: [number_of_dice]d[number_of_sides] OR [disadvantage|dis|d] OR [advantage|adv|a])', aliases=['r', 'R'])
 async def roll_dice(CTX, *DICE):
 	REQUEST_USR = CTX.author
 	log(f'Running the dice roll command for {REQUEST_USR}')
@@ -83,13 +84,13 @@ async def quote(CTX, *QUOTE):
 	log(f'Now running the quote command for {REQUEST_USR}')
 
 	if not QUOTE:
-		with open(f'{os.getcwd()}/Quotes.txt', 'r') as f:
+		with open(f'{ASSET_DIR}/Quotes.txt', 'r') as f:
 			LINES = f.read().splitlines()
 			SELECTED_INDEX = random.choice(range(0, len(LINES)))
 			RESPONSE = LINES[SELECTED_INDEX]
 	else:
 		QUOTE_TEXT = ' '.join(QUOTE)
-		with open(f'{os.getcwd()}/Quotes.txt', 'a') as f:
+		with open(f'{ASSET_DIR}/Quotes.txt', 'a') as f:
 			f.write(f'\n{QUOTE_TEXT}')
 		RESPONSE = f'Added the quote "{QUOTE_TEXT}" to the list!' 
 
@@ -100,13 +101,13 @@ async def dum(CTX):
 	REQUEST_USR = CTX.author
 	log(f'Now running the dum command for {REQUEST_USR}')
 	
-	with open(f'{os.getcwd()}/DumQuotes.txt', 'r') as f:
+	with open(f'{ASSET_DIR}/DumQuotes.txt', 'r') as f:
 		LINES = f.read().splitlines()
 		SELECTED_INDEX = random.choice(range(0, len(LINES)))
 		DUM_LINE = LINES[SELECTED_INDEX]
 
 	if DUM_LINE.endswith('.gif') or DUM_LINE.endswith('.png') or DUM_LINE.endswith('.jpg'):
-		await CTX.send(f'{REQUEST_USR.mention}', file=discord.File(f'{os.getcwd()}/Assets/{DUM_LINE}'))
+		await CTX.send(f'{REQUEST_USR.mention}', file=discord.File(f'{ASSET_DIR}/{DUM_LINE}'))
 	else:
 		await CTX.send(f'{REQUEST_USR.mention} {DUM_LINE}')
 
@@ -115,14 +116,14 @@ async def yikes(CTX):
 	REQUEST_USR = CTX.author
 	log(f'Now running the yikes command for {REQUEST_USR}')
 
-	with open(f'{os.getcwd()}/YikesQuotes.txt', 'r') as f:
+	with open(f'{ASSET_DIR}/YikesQuotes.txt', 'r') as f:
 		LINES = f.read().splitlines()
 		SELECTED_INDEX = random.choice(range(0, len(LINES)))
 		YIKES_LINE = LINES[SELECTED_INDEX]
 
-		await CTX.send(f'{REQUEST_USR.mention}', file=discord.File(f'{os.getcwd()}/Assets/{YIKES_LINE}'))
+		await CTX.send(f'{REQUEST_USR.mention}', file=discord.File(f'{ASSET_DIR}/{YIKES_LINE}'))
 
-@BOT.command(name='rollstats', help='Rolls 4d6 and adds the three highest. (See help message for details).\nIt will either roll the number of stat numbers specified, or that standard 6.', aliases=['rs', 'RS'])
+@BOT.command(name='rollstats', help='Rolls 4d6 and adds the three highest.\nIt will either roll the number of stat numbers specified, or that standard 6.', aliases=['rs', 'RS'])
 async def roll_stats(CTX, *NUMBER):
 	REQUEST_USR = CTX.author
 	log(f'Running the roll stats command for {REQUEST_USR}')
