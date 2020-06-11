@@ -20,6 +20,60 @@ ASSET_DIR = os.getenv('ASSET_DIRECTORY')
 log('Creating bot instance')
 BOT = commands.Bot(('!', 'squire, '))
 
+#This function randomly generates a number of values between 1 and a given number
+def dice_roll(NUMBER, SIDES):
+	DICE_RESULT = [
+		int(random.choice(range(1, SIDES + 1)))
+		for _ in range(NUMBER)
+	]
+
+	return DICE_RESULT
+
+#This function spilts a standard dice string into an ordered array.
+def split_dice_string(DICE_STR):
+	DICE_SEPERATOR = DICE_STR.find('d');
+	PLUS_MOD_SEPERATOR = DICE_STR.find('+');
+	MINUS_MOD_SEPERATOR = DICE_STR.find('-');
+
+	if DICE_SEPERATOR == -1:
+		return None
+	
+	DICE_SPLIT = DICE_STR.lower().split('d');
+
+	if PLUS_MOD_SEPERATOR != -1:
+		MOD_SPLIT = DICE_SPLIT[1].split('+')
+	elif MINUS_MOD_SEPERATOR != -1:
+		MOD_SPLIT = DICE_SPLIT[1].split('-')
+		MOD_SPLIT[1] = f'-{MOD_SPLIT[1]}'
+	else:
+		MOD_SPLIT = [DICE_SPLIT[1], '0']
+	try:
+		DICE_NUM = int(DICE_SPLIT[0])
+		DICE_SIDES = int(MOD_SPLIT[0])
+		DICE_MOD = int(MOD_SPLIT[1])
+	except ValueError:
+		return None
+
+	return [DICE_NUM, DICE_SIDES, DICE_MOD]
+
+#This function takes an array of integers and a modifier and formats them into a nice string
+def create_dice_math_str(ROLL_ARRAY, MODIFIER):
+	MATH_STR = f'({ROLL_ARRAY[0]}'
+	#for ROLL in ROLL_ARRAY:
+	#	MATH_STR = f'{MATH_STR} + {ROLL}'
+	COUNT = 1
+	while (COUNT < len(ROLL_ARRAY)):
+		MATH_STR = f'{MATH_STR} + {ROLL_ARRAY[COUNT]}'
+		COUNT += 1
+
+	if MODIFIER == 0:
+		MATH_STR = f'{MATH_STR})'
+	elif MODIFIER > 0:
+		MATH_STR = f'{MATH_STR}) + {MODIFIER}'
+	else:
+		MATH_STR = f'{MATH_STR}) - {abs(MODIFIER)}'
+	return MATH_STR
+
 @BOT.command(name='roll', help='Rolls dice!\n(Format: [number_of_dice]d[number_of_sides] OR [disadvantage|dis|d] OR [advantage|adv|a])', aliases=['r', 'R'])
 async def roll_dice(CTX, *DICE):
 	REQUEST_USR = CTX.author
@@ -27,55 +81,22 @@ async def roll_dice(CTX, *DICE):
 	if not DICE:
 		RESPONSE = f'{REQUEST_USR.mention} needs to learn how to give the correct parameters. (No parameter not given)'
 	elif DICE[0].lower() == 'dis' or DICE[0].lower() == 'd' or DICE[0].lower() == 'disadvantage':
-		DICE_RESULT = [
-			int(random.choice(range(1, 21)))
-			for _ in range(2)
-		]
-
-		if DICE_RESULT[0] < DICE_RESULT[1]:
-			RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_RESULT[0]}** at **disadvantage**. [{DICE_RESULT[0]}, ~~{DICE_RESULT[1]}~~]'
-		else:
-			RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_RESULT[1]}** at **disadvantage**. [~~{DICE_RESULT[0]}~~, {DICE_RESULT[1]}]'
+		DICE_RESULT = dice_roll(2, 20)
+		DICE_RESULT.sort(reverse=True);
+		RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_RESULT[0]}** at **disadvantage**. [~~{DICE_RESULT[0]}~~, {DICE_RESULT[1]}]'
 	elif DICE[0].lower() == 'adv' or DICE[0].lower() == 'a' or DICE[0].lower() == 'advantage':
-		DICE_RESULT = [
-			int(random.choice(range(1, 21)))
-			for _ in range(2)
-		]
-
-		if DICE_RESULT[0] > DICE_RESULT[1]:
-			RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_RESULT[0]}** at **advantage**. [{DICE_RESULT[0]}, ~~{DICE_RESULT[1]}~~]'
-		else:
-			RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_RESULT[1]}** at **advantage**. [~~{DICE_RESULT[0]}~~, {DICE_RESULT[1]}]'
+		DICE_RESULT = dice_roll(2, 20)
+		DICE_RESULT.sort(reverse=True);
+		RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_RESULT[0]}** at **advantage**. [{DICE_RESULT[0]}, ~~{DICE_RESULT[1]}~~]'
 	else:
-		SEPERATOR_INDEX = DICE[0].lower().find('d')
-
-		if SEPERATOR_INDEX == -1:
+		DICE_VALUES = split_dice_string(DICE[0])
+		if not DICE_VALUES:
 			RESPONSE = f'{REQUEST_USR.mention} needs to learn how to give the correct parameters. ("**{DICE[0]}**" is not valid parameter)'
 		else:
-			SPLIT = DICE[0].lower().split('d')
-
-			TEST = True
-			try:
-				DICE_NUM = int(SPLIT[0])
-				DICE_SIDES = int(SPLIT[1])
-			except ValueError:
-				RESPONSE = f'{REQUEST_USR.mention} needs to learn how to give the correct parameters. ("**{DICE[0]}**" is not valid parameter)'
-				TEST = False
-
-			if TEST:
-				DICE_RESULT = [
-					int(random.choice(range(1, DICE_SIDES + 1)))
-					for _ in range(DICE_NUM)
-				]
-
-				if len(DICE_RESULT) > 1:
-					DICE_TOTAL = 0
-					for NUM in DICE_RESULT:
-						DICE_TOTAL = DICE_TOTAL + int(NUM)
-					
-					RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_TOTAL}** on **{DICE[0]}**. {DICE_RESULT}'
-				else:
-					RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_RESULT[0]}** on a **{DICE[0]}**.'
+			DICE_RESULT = dice_roll(DICE_VALUES[0], DICE_VALUES[1])
+			DICE_TOTAL = sum(DICE_RESULT) + DICE_VALUES[2];
+			MATH_STR = create_dice_math_str(DICE_RESULT, DICE_VALUES[2])
+			RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_TOTAL}** on **{DICE[0]}**. [{MATH_STR}]'
 	await CTX.send(RESPONSE)
 
 @BOT.command(name='quote', help='Either adds or reads off a random quote.', aliases=['q', 'Q'])
@@ -135,10 +156,7 @@ async def roll_stats(CTX, *NUMBER):
 	RESPONSE = ''
 	COUNT = 0
 	while(COUNT < NUM_DICE):
-		DICE_RESULT = [
-				int(random.choice(range(1, 7)))
-				for _ in range(4)
-			]
+		DICE_RESULT = dice_roll(4, 6)
 		DICE_RESULT.sort(reverse=True);
 		DICE_TOTAL = int(DICE_RESULT[0]) + int(DICE_RESULT[1]) + int(DICE_RESULT[2])
 		RESPONSE += f'{DICE_TOTAL} ['

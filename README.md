@@ -1,4 +1,6 @@
 # Squire-Discord-Bot
+[![BCH compliance](https://bettercodehub.com/edge/badge/RadBlueDawg/Squire-Discord-Bot?branch=master)](https://bettercodehub.com/)
+
 The Squire bot for discord is something I put together for usage on my own personal D&D discord server. This README details the different commands that are available and the setup required if you want to run this bot for yourself.
 
 ## Setup
@@ -40,8 +42,8 @@ Outputs help text for each of the commands. Whatever Discord automagically puts 
 ### quote|q|Q *[quote-text]*
 The bot will either pull a random quote from a text file, or add a specified quote to the text file.
 
-### roll|r|R [number-of-dice]d[sides-on-dice] OR [disadvantage|dis|d] OR [advantage|adv|a]
-This is a dice roller command. Format the parameter like you would usually see dice typed out (ex. 1d20, 8d8, etc.). The command can additionally roll two d20s with advantage or disadvantage, depending on which is specified.
+### roll|r|R [number-of-dice]d[sides-on-dice]*[modifier]* OR [disadvantage|dis|d] OR [advantage|adv|a]
+This is a dice roller command. Format the parameter like you would usually see dice typed out (ex. 1d20, 8d8+6, 2d6-4, etc.). The command can additionally roll two d20s with advantage or disadvantage, depending on which is specified.
 
 ### rollstats|rs|RS *[number-of-stat-rolls]*
 This is a special diceroller command. For each 'stat,' 4d6 are rolled and the highest three are added together. The command will roll the number of stats indicated, or a standard 6 by default.
