@@ -32,21 +32,47 @@ def dice_roll(NUMBER, SIDES):
 #This function spilts a standard dice string into an ordered array.
 def split_dice_string(DICE_STR):
 	DICE_SEPERATOR = DICE_STR.find('d');
+	PLUS_MOD_SEPERATOR = DICE_STR.find('+');
+	MINUS_MOD_SEPERATOR = DICE_STR.find('-');
 
 	if DICE_SEPERATOR == -1:
 		return None
 	
-	SPLIT = DICE_STR.lower().split('d');
+	DICE_SPLIT = DICE_STR.lower().split('d');
 
+	if PLUS_MOD_SEPERATOR != -1:
+		MOD_SPLIT = DICE_SPLIT[1].split('+')
+	elif MINUS_MOD_SEPERATOR != -1:
+		MOD_SPLIT = DICE_SPLIT[1].split('-')
+		MOD_SPLIT[1] = f'-{MOD_SPLIT[1]}'
+	else:
+		MOD_SPLIT = [DICE_SPLIT[1], '0']
 	try:
-		DICE_NUM = int(SPLIT[0])
-		DICE_SIDES = int(SPLIT[1])
+		DICE_NUM = int(DICE_SPLIT[0])
+		DICE_SIDES = int(MOD_SPLIT[0])
+		DICE_MOD = int(MOD_SPLIT[1])
 	except ValueError:
 		return None
 
-	return [DICE_NUM, DICE_SIDES]
+	return [DICE_NUM, DICE_SIDES, DICE_MOD]
 
+#This function takes an array of integers and a modifier and formats them into a nice string
+def create_dice_math_str(ROLL_ARRAY, MODIFIER):
+	MATH_STR = f'({ROLL_ARRAY[0]}'
+	#for ROLL in ROLL_ARRAY:
+	#	MATH_STR = f'{MATH_STR} + {ROLL}'
+	COUNT = 1
+	while (COUNT < len(ROLL_ARRAY)):
+		MATH_STR = f'{MATH_STR} + {ROLL_ARRAY[COUNT]}'
+		COUNT += 1
 
+	if MODIFIER == 0:
+		MATH_STR = f'{MATH_STR})'
+	elif MODIFIER > 0:
+		MATH_STR = f'{MATH_STR}) + {MODIFIER}'
+	else:
+		MATH_STR = f'{MATH_STR}) - {abs(MODIFIER)}'
+	return MATH_STR
 
 @BOT.command(name='roll', help='Rolls dice!\n(Format: [number_of_dice]d[number_of_sides] OR [disadvantage|dis|d] OR [advantage|adv|a])', aliases=['r', 'R'])
 async def roll_dice(CTX, *DICE):
@@ -68,11 +94,9 @@ async def roll_dice(CTX, *DICE):
 			RESPONSE = f'{REQUEST_USR.mention} needs to learn how to give the correct parameters. ("**{DICE[0]}**" is not valid parameter)'
 		else:
 			DICE_RESULT = dice_roll(DICE_VALUES[0], DICE_VALUES[1])
-			if DICE_VALUES[0] > 1:
-				DICE_TOTAL = sum(DICE_RESULT);		
-				RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_TOTAL}** on **{DICE[0]}**. {DICE_RESULT}'
-			else:
-				RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_RESULT[0]}** on a **{DICE[0]}**.'
+			DICE_TOTAL = sum(DICE_RESULT) + DICE_VALUES[2];
+			MATH_STR = create_dice_math_str(DICE_RESULT, DICE_VALUES[2])
+			RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_TOTAL}** on **{DICE[0]}**. [{MATH_STR}]'
 	await CTX.send(RESPONSE)
 
 @BOT.command(name='quote', help='Either adds or reads off a random quote.', aliases=['q', 'Q'])
