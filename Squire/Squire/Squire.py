@@ -32,7 +32,7 @@ def dice_roll(NUMBER, SIDES):
 #This function spilts a standard dice string into an ordered array.
 def split_dice_string(DICE_STR):
 	DICE_SEPERATOR = DICE_STR.find('d');
-	
+
 	if DICE_SEPERATOR == -1:
 		return None
 	
@@ -45,6 +45,8 @@ def split_dice_string(DICE_STR):
 		return None
 
 	return [DICE_NUM, DICE_SIDES]
+
+
 
 @BOT.command(name='roll', help='Rolls dice!\n(Format: [number_of_dice]d[number_of_sides] OR [disadvantage|dis|d] OR [advantage|adv|a])', aliases=['r', 'R'])
 async def roll_dice(CTX, *DICE):
@@ -61,32 +63,16 @@ async def roll_dice(CTX, *DICE):
 		DICE_RESULT.sort(reverse=True);
 		RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_RESULT[0]}** at **advantage**. [{DICE_RESULT[0]}, ~~{DICE_RESULT[1]}~~]'
 	else:
-		SEPERATOR_INDEX = DICE[0].lower().find('d')
-
-		if SEPERATOR_INDEX == -1:
+		DICE_VALUES = split_dice_string(DICE[0])
+		if not DICE_VALUES:
 			RESPONSE = f'{REQUEST_USR.mention} needs to learn how to give the correct parameters. ("**{DICE[0]}**" is not valid parameter)'
 		else:
-			SPLIT = DICE[0].lower().split('d')
-
-			TEST = True
-			try:
-				DICE_NUM = int(SPLIT[0])
-				DICE_SIDES = int(SPLIT[1])
-			except ValueError:
-				RESPONSE = f'{REQUEST_USR.mention} needs to learn how to give the correct parameters. ("**{DICE[0]}**" is not valid parameter)'
-				TEST = False
-
-			if TEST:
-				DICE_RESULT = dice_roll(DICE_NUM, DICE_SIDES)
-
-				if len(DICE_RESULT) > 1:
-					DICE_TOTAL = 0
-					for NUM in DICE_RESULT:
-						DICE_TOTAL = DICE_TOTAL + int(NUM)
-					
-					RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_TOTAL}** on **{DICE[0]}**. {DICE_RESULT}'
-				else:
-					RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_RESULT[0]}** on a **{DICE[0]}**.'
+			DICE_RESULT = dice_roll(DICE_VALUES[0], DICE_VALUES[1])
+			if DICE_VALUES[0] > 1:
+				DICE_TOTAL = sum(DICE_RESULT);		
+				RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_TOTAL}** on **{DICE[0]}**. {DICE_RESULT}'
+			else:
+				RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_RESULT[0]}** on a **{DICE[0]}**.'
 	await CTX.send(RESPONSE)
 
 @BOT.command(name='quote', help='Either adds or reads off a random quote.', aliases=['q', 'Q'])
