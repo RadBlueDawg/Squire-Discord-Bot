@@ -12,6 +12,9 @@ def log(MESSAGE):
 	TIMESTAMP = f'{LOCAL_TIME.tm_year}-{LOCAL_TIME.tm_mon}-{LOCAL_TIME.tm_mday} {LOCAL_TIME.tm_hour}:{LOCAL_TIME.tm_min}:{LOCAL_TIME.tm_sec}'
 	print(f'{TIMESTAMP} {MESSAGE}')
 
+VERSION = '1.3-DEV'
+log(f"You're running Squire Discord Bot Version {VERSION}")
+
 log('Loading enviroment variables')
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -20,8 +23,7 @@ ASSET_DIR = os.getenv('ASSET_DIRECTORY')
 log('Creating bot instance')
 BOT = commands.Bot(('!', 'squire, '))
 
-#This function randomly generates a number of values between 1 and a given
-#number
+#This function randomly generates a number of values between 1 and a given number
 def dice_roll(NUMBER, SIDES):
 	DICE_RESULT = [
 		int(random.choice(range(1, SIDES + 1)))
@@ -61,12 +63,10 @@ def split_dice_string(DICE_STR):
 
 	return [DICE_NUM, DICE_SIDES, DICE_MOD]
 
-#This function takes an array of integers and a modifier and formats them into
-#a nice string
+#This function takes an array of integers and a modifier and formats them into a nice string
 def create_dice_math_str(ROLL_ARRAY, MODIFIER):
 	MATH_STR = f'({ROLL_ARRAY[0]}'
-	#for ROLL in ROLL_ARRAY:
-	#	MATH_STR = f'{MATH_STR} + {ROLL}'
+
 	COUNT = 1
 	while (COUNT < len(ROLL_ARRAY)):
 		MATH_STR = f'{MATH_STR} + {ROLL_ARRAY[COUNT]}'
@@ -80,7 +80,7 @@ def create_dice_math_str(ROLL_ARRAY, MODIFIER):
 		MATH_STR = f'{MATH_STR}) - {abs(MODIFIER)}'
 	return MATH_STR
 
-@BOT.command(name='roll', help='Rolls dice!\n(Format: [number_of_dice]d[number_of_sides] OR [disadvantage|dis|d] OR [advantage|adv|a])', aliases=['r', 'R'])
+@BOT.command(name='roll', help='Rolls dice!\n\n(Format: [number_of_dice]d[number_of_sides] OR [disadvantage|dis|d] OR [advantage|adv|a])', aliases=['r', 'R'])
 async def roll_dice(CTX, *DICE):
 	REQUEST_USR = CTX.author
 	log(f'Running the dice roll command for {REQUEST_USR}')
@@ -105,7 +105,7 @@ async def roll_dice(CTX, *DICE):
 			RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_TOTAL}** on **{DICE[0]}**. [{MATH_STR}]'
 	await CTX.send(RESPONSE)
 
-@BOT.command(name='quote', help='Either adds or reads off a random quote.', aliases=['q', 'Q'])
+@BOT.command(name='quote', help='Either adds or reads off a random quote.\n\nYou can call the command alone to have Squire read off a quote, or follow the command with a phrase to add it to the list of quotes.', aliases=['q', 'Q'])
 async def quote(CTX, *QUOTE):
 	REQUEST_USR = CTX.author
 	log(f'Now running the quote command for {REQUEST_USR}')
@@ -123,7 +123,7 @@ async def quote(CTX, *QUOTE):
 
 	await CTX.send(RESPONSE)
 
-@BOT.command(name='dum', help='U iz dum.', aliases=['d', 'D'])
+@BOT.command(name='dum', brief='U iz dum.', help='U iz dum.\n\nResponds with either an image or quote calling the requester dumb.', aliases=['d', 'D'])
 async def dum(CTX):
 	REQUEST_USR = CTX.author
 	log(f'Now running the dum command for {REQUEST_USR}')
@@ -138,7 +138,7 @@ async def dum(CTX):
 	else:
 		await CTX.send(f'{REQUEST_USR.mention} {DUM_LINE}')
 
-@BOT.command(name='yikes', help='Declare a yikes.', aliases=['y', 'Y'])
+@BOT.command(name='yikes', help='Declare a yikes.\n\nSquire will reply with an image/gif that evokes the idea of yikes.', aliases=['y', 'Y'])
 async def yikes(CTX):
 	REQUEST_USR = CTX.author
 	log(f'Now running the yikes command for {REQUEST_USR}')
@@ -150,7 +150,7 @@ async def yikes(CTX):
 
 		await CTX.send(f'{REQUEST_USR.mention}', file=discord.File(f'{ASSET_DIR}/{YIKES_LINE}'))
 
-@BOT.command(name='rollstats', help='Rolls 4d6 and adds the three highest.\nIt will either roll the number of stat numbers specified, or that standard 6.', aliases=['rs', 'RS'])
+@BOT.command(name='rollstats', help='Rolls 4d6 and adds the three highest.\n\nIt will either roll the number of stat numbers specified, or that standard 6.', aliases=['rs', 'RS'])
 async def roll_stats(CTX, *NUMBER):
 	REQUEST_USR = CTX.author
 	log(f'Running the roll stats command for {REQUEST_USR}')
@@ -181,7 +181,7 @@ async def roll_stats(CTX, *NUMBER):
 
 @BOT.event
 async def on_ready():
-	await BOT.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name='for !help'))
+	await BOT.change_presence(activity=discord.Activity(type=discord.ActivityType.streaming, name=f'v{VERSION} (Try !help)'))
 	log(f'{BOT.user.name} has connected to Discord!')
 
 log('Sending bot to server')
