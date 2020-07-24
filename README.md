@@ -6,8 +6,8 @@ The Squire bot for discord is something I put together for usage on my own perso
 ## Setup
 ### Dependencies
 Before the bot script can be run, you need to make sure the computer you're running it on has Python 3.7 installed. You will also need to install the following packages:
-- python-dotenv
-- discord.py
+- python-dotenv (0.14.0 or greater)
+- discord.py (1.3.4 or greater)
 
 ### Enviroment Variables
 This bot has two enviroment variables. The first is used to store the Discord bot token for authentication purposes, while the second is the path to the folder containing the assets for the commands that require external files. All you need to do to get this to run properly is include a file called ".env" in the same directory as the python file with the following text inside it:
