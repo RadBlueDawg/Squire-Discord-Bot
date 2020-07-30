@@ -19,6 +19,7 @@ log('Loading enviroment variables')
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 ASSET_DIR = os.getenv('ASSET_DIRECTORY')
+FEEDBACK_LINK = os.getenv('FEEDBACK_LINK')
 
 log('Creating bot instance')
 BOT = commands.Bot(('!', 'squire, '))
@@ -85,7 +86,7 @@ async def roll_dice(CTX, *DICE):
 	REQUEST_USR = CTX.author
 	log(f'Running the dice roll command for {REQUEST_USR}')
 	if not DICE:
-		RESPONSE = f'{REQUEST_USR.mention} needs to learn how to give the correct parameters. (No parameter not given)'
+		RESPONSE = f'{REQUEST_USR.mention} needs to learn how to give the correct parameters. (No parameter given)'
 	elif DICE[0].lower() == 'dis' or DICE[0].lower() == 'd' or DICE[0].lower() == 'disadvantage':
 		DICE_RESULT = dice_roll(2, 20)
 		DICE_RESULT.sort(reverse=True)
@@ -108,7 +109,7 @@ async def roll_dice(CTX, *DICE):
 @BOT.command(name='quote', help='Either adds or reads off a random quote.\n\nYou can call the command alone to have Squire read off a quote, or follow the command with a phrase to add it to the list of quotes.', aliases=['q', 'Q'])
 async def quote(CTX, *QUOTE):
 	REQUEST_USR = CTX.author
-	log(f'Now running the quote command for {REQUEST_USR}')
+	log(f'Running the quote command for {REQUEST_USR}')
 
 	if not QUOTE:
 		with open(f'{ASSET_DIR}/Quotes.txt', 'r') as f:
@@ -126,7 +127,7 @@ async def quote(CTX, *QUOTE):
 @BOT.command(name='dum', brief='U iz dum.', help='U iz dum.\n\nResponds with either an image or quote calling the requester dumb.', aliases=['d', 'D'])
 async def dum(CTX):
 	REQUEST_USR = CTX.author
-	log(f'Now running the dum command for {REQUEST_USR}')
+	log(f'Running the dum command for {REQUEST_USR}')
 	
 	with open(f'{ASSET_DIR}/DumQuotes.txt', 'r') as f:
 		LINES = f.read().splitlines()
@@ -141,7 +142,7 @@ async def dum(CTX):
 @BOT.command(name='yikes', help='Declare a yikes.\n\nSquire will reply with an image/gif that evokes the idea of yikes.', aliases=['y', 'Y'])
 async def yikes(CTX):
 	REQUEST_USR = CTX.author
-	log(f'Now running the yikes command for {REQUEST_USR}')
+	log(f'Running the yikes command for {REQUEST_USR}')
 
 	with open(f'{ASSET_DIR}/YikesQuotes.txt', 'r') as f:
 		LINES = f.read().splitlines()
@@ -178,6 +179,14 @@ async def roll_stats(CTX, *NUMBER):
 		COUNT += 1
 
 	await CTX.send(RESPONSE)
+
+@BOT.command(name='feedback', help='Replies with the feedback link.\n\nUse the link to report any bugs or request a feature.', aliases=['fb', 'FB'])
+async def feedback(CTX):
+	REQUEST_USR = CTX.author
+	log(f'Running the feedback command for {REQUEST_USR}')
+
+	RESPONSE = f'Got feedback for Squire? You can sumbit it at the following link: {FEEDBACK_LINK}'
+	await CTX.send(RESPONSE);
 
 @BOT.event
 async def on_ready():
