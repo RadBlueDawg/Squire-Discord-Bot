@@ -12,10 +12,14 @@ def log(MESSAGE):
 	TIMESTAMP = f'{LOCAL_TIME.tm_year}-{LOCAL_TIME.tm_mon}-{LOCAL_TIME.tm_mday} {LOCAL_TIME.tm_hour}:{LOCAL_TIME.tm_min}:{LOCAL_TIME.tm_sec}'
 	print(f'{TIMESTAMP} {MESSAGE}')
 
+VERSION = '1.3'
+log(f"You're running Squire Discord Bot Version {VERSION}")
+
 log('Loading enviroment variables')
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 ASSET_DIR = os.getenv('ASSET_DIRECTORY')
+FEEDBACK_LINK = os.getenv('FEEDBACK_LINK')
 
 log('Creating bot instance')
 BOT = commands.Bot(('!', 'squire, '))
@@ -31,14 +35,14 @@ def dice_roll(NUMBER, SIDES):
 
 #This function spilts a standard dice string into an ordered array.
 def split_dice_string(DICE_STR):
-	DICE_SEPERATOR = DICE_STR.find('d');
-	PLUS_MOD_SEPERATOR = DICE_STR.find('+');
-	MINUS_MOD_SEPERATOR = DICE_STR.find('-');
+	DICE_SEPERATOR = DICE_STR.find('d')
+	PLUS_MOD_SEPERATOR = DICE_STR.find('+')
+	MINUS_MOD_SEPERATOR = DICE_STR.find('-')
 
 	if DICE_SEPERATOR == -1:
 		return None
 	
-	DICE_SPLIT = DICE_STR.lower().split('d');
+	DICE_SPLIT = DICE_STR.lower().split('d')
 
 	if PLUS_MOD_SEPERATOR != -1:
 		MOD_SPLIT = DICE_SPLIT[1].split('+')
@@ -47,6 +51,10 @@ def split_dice_string(DICE_STR):
 		MOD_SPLIT[1] = f'-{MOD_SPLIT[1]}'
 	else:
 		MOD_SPLIT = [DICE_SPLIT[1], '0']
+
+	if DICE_SPLIT[0] == '':
+		DICE_SPLIT[0] = '1'
+
 	try:
 		DICE_NUM = int(DICE_SPLIT[0])
 		DICE_SIDES = int(MOD_SPLIT[0])
@@ -59,8 +67,7 @@ def split_dice_string(DICE_STR):
 #This function takes an array of integers and a modifier and formats them into a nice string
 def create_dice_math_str(ROLL_ARRAY, MODIFIER):
 	MATH_STR = f'({ROLL_ARRAY[0]}'
-	#for ROLL in ROLL_ARRAY:
-	#	MATH_STR = f'{MATH_STR} + {ROLL}'
+
 	COUNT = 1
 	while (COUNT < len(ROLL_ARRAY)):
 		MATH_STR = f'{MATH_STR} + {ROLL_ARRAY[COUNT]}'
@@ -74,19 +81,19 @@ def create_dice_math_str(ROLL_ARRAY, MODIFIER):
 		MATH_STR = f'{MATH_STR}) - {abs(MODIFIER)}'
 	return MATH_STR
 
-@BOT.command(name='roll', help='Rolls dice!\n(Format: [number_of_dice]d[number_of_sides] OR [disadvantage|dis|d] OR [advantage|adv|a])', aliases=['r', 'R'])
+@BOT.command(name='roll', help='Rolls dice!\n\n(Format: [number_of_dice]d[number_of_sides] OR [disadvantage|dis|d] OR [advantage|adv|a])', aliases=['r', 'R'])
 async def roll_dice(CTX, *DICE):
 	REQUEST_USR = CTX.author
 	log(f'Running the dice roll command for {REQUEST_USR}')
 	if not DICE:
-		RESPONSE = f'{REQUEST_USR.mention} needs to learn how to give the correct parameters. (No parameter not given)'
+		RESPONSE = f'{REQUEST_USR.mention} needs to learn how to give the correct parameters. (No parameter given)'
 	elif DICE[0].lower() == 'dis' or DICE[0].lower() == 'd' or DICE[0].lower() == 'disadvantage':
 		DICE_RESULT = dice_roll(2, 20)
-		DICE_RESULT.sort(reverse=True);
+		DICE_RESULT.sort(reverse=True)
 		RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_RESULT[0]}** at **disadvantage**. [~~{DICE_RESULT[0]}~~, {DICE_RESULT[1]}]'
 	elif DICE[0].lower() == 'adv' or DICE[0].lower() == 'a' or DICE[0].lower() == 'advantage':
 		DICE_RESULT = dice_roll(2, 20)
-		DICE_RESULT.sort(reverse=True);
+		DICE_RESULT.sort(reverse=True)
 		RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_RESULT[0]}** at **advantage**. [{DICE_RESULT[0]}, ~~{DICE_RESULT[1]}~~]'
 	else:
 		DICE_VALUES = split_dice_string(DICE[0])
@@ -94,15 +101,15 @@ async def roll_dice(CTX, *DICE):
 			RESPONSE = f'{REQUEST_USR.mention} needs to learn how to give the correct parameters. ("**{DICE[0]}**" is not valid parameter)'
 		else:
 			DICE_RESULT = dice_roll(DICE_VALUES[0], DICE_VALUES[1])
-			DICE_TOTAL = sum(DICE_RESULT) + DICE_VALUES[2];
+			DICE_TOTAL = sum(DICE_RESULT) + DICE_VALUES[2]
 			MATH_STR = create_dice_math_str(DICE_RESULT, DICE_VALUES[2])
 			RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_TOTAL}** on **{DICE[0]}**. [{MATH_STR}]'
 	await CTX.send(RESPONSE)
 
-@BOT.command(name='quote', help='Either adds or reads off a random quote.', aliases=['q', 'Q'])
+@BOT.command(name='quote', help='Either adds or reads off a random quote.\n\nYou can call the command alone to have Squire read off a quote, or follow the command with a phrase to add it to the list of quotes.', aliases=['q', 'Q'])
 async def quote(CTX, *QUOTE):
 	REQUEST_USR = CTX.author
-	log(f'Now running the quote command for {REQUEST_USR}')
+	log(f'Running the quote command for {REQUEST_USR}')
 
 	if not QUOTE:
 		with open(f'{ASSET_DIR}/Quotes.txt', 'r') as f:
@@ -117,10 +124,10 @@ async def quote(CTX, *QUOTE):
 
 	await CTX.send(RESPONSE)
 
-@BOT.command(name='dum', help='U iz dum.', aliases=['d', 'D'])
+@BOT.command(name='dum', brief='U iz dum.', help='U iz dum.\n\nResponds with either an image or quote calling the requester dumb.', aliases=['d', 'D'])
 async def dum(CTX):
 	REQUEST_USR = CTX.author
-	log(f'Now running the dum command for {REQUEST_USR}')
+	log(f'Running the dum command for {REQUEST_USR}')
 	
 	with open(f'{ASSET_DIR}/DumQuotes.txt', 'r') as f:
 		LINES = f.read().splitlines()
@@ -132,10 +139,10 @@ async def dum(CTX):
 	else:
 		await CTX.send(f'{REQUEST_USR.mention} {DUM_LINE}')
 
-@BOT.command(name='yikes', help='Declare a yikes.', aliases=['y', 'Y'])
+@BOT.command(name='yikes', help='Declare a yikes.\n\nSquire will reply with an image/gif that evokes the idea of yikes.', aliases=['y', 'Y'])
 async def yikes(CTX):
 	REQUEST_USR = CTX.author
-	log(f'Now running the yikes command for {REQUEST_USR}')
+	log(f'Running the yikes command for {REQUEST_USR}')
 
 	with open(f'{ASSET_DIR}/YikesQuotes.txt', 'r') as f:
 		LINES = f.read().splitlines()
@@ -144,7 +151,7 @@ async def yikes(CTX):
 
 		await CTX.send(f'{REQUEST_USR.mention}', file=discord.File(f'{ASSET_DIR}/{YIKES_LINE}'))
 
-@BOT.command(name='rollstats', help='Rolls 4d6 and adds the three highest.\nIt will either roll the number of stat numbers specified, or that standard 6.', aliases=['rs', 'RS'])
+@BOT.command(name='rollstats', help='Rolls 4d6 and adds the three highest.\n\nIt will either roll the number of stat numbers specified, or that standard 6.', aliases=['rs', 'RS'])
 async def roll_stats(CTX, *NUMBER):
 	REQUEST_USR = CTX.author
 	log(f'Running the roll stats command for {REQUEST_USR}')
@@ -157,10 +164,10 @@ async def roll_stats(CTX, *NUMBER):
 	COUNT = 0
 	while(COUNT < NUM_DICE):
 		DICE_RESULT = dice_roll(4, 6)
-		DICE_RESULT.sort(reverse=True);
+		DICE_RESULT.sort(reverse=True)
 		DICE_TOTAL = int(DICE_RESULT[0]) + int(DICE_RESULT[1]) + int(DICE_RESULT[2])
 		RESPONSE += f'{DICE_TOTAL} ['
-		ROLL_COUNT = 1;
+		ROLL_COUNT = 1
 		for ROLL in DICE_RESULT:
 			if ROLL_COUNT == 4:
 				ROLL = f'~~{ROLL}~~]\n'
@@ -173,8 +180,17 @@ async def roll_stats(CTX, *NUMBER):
 
 	await CTX.send(RESPONSE)
 
+@BOT.command(name='feedback', help='Replies with the feedback link.\n\nUse the link to report any bugs or request a feature.', aliases=['fb', 'FB'])
+async def feedback(CTX):
+	REQUEST_USR = CTX.author
+	log(f'Running the feedback command for {REQUEST_USR}')
+
+	RESPONSE = f'Got feedback for Squire? You can sumbit it at the following link: {FEEDBACK_LINK}'
+	await CTX.send(RESPONSE);
+
 @BOT.event
 async def on_ready():
+	await BOT.change_presence(activity=discord.Activity(type=discord.ActivityType.streaming, name=f'v{VERSION} (Try !help)'))
 	log(f'{BOT.user.name} has connected to Discord!')
 
 log('Sending bot to server')
