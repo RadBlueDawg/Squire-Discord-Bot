@@ -1,4 +1,12 @@
 # Changelog
+## v1.3
+* Added the `!feedback` command
+* Added a display for the current version of Squire being run
+* Fixed formatting on help and error messages
+* Modified the `!roll` command to interpret no number of dice to be one
+* Added version dependency information to the README
+* Fixed minor formatting issues in the CHANGELOG
+
 ## v1.2
 * Refactored the `!roll` command to be cleaner and simpler
 * Simplified the `!rollstat` command using some of the improvements to the `!roll` command
