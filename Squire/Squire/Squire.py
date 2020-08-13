@@ -12,7 +12,7 @@ def log(MESSAGE):
 	TIMESTAMP = f'{LOCAL_TIME.tm_year}-{LOCAL_TIME.tm_mon}-{LOCAL_TIME.tm_mday} {LOCAL_TIME.tm_hour}:{LOCAL_TIME.tm_min}:{LOCAL_TIME.tm_sec}'
 	print(f'{TIMESTAMP} {MESSAGE}')
 
-VERSION = '1.3-DEV'
+VERSION = '1.3'
 log(f"You're running Squire Discord Bot Version {VERSION}")
 
 log('Loading enviroment variables')
