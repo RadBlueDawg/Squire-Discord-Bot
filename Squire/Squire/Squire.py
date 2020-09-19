@@ -3,6 +3,7 @@ import os
 import random
 import time
 import discord
+import sys
 
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -81,6 +82,12 @@ def create_dice_math_str(ROLL_ARRAY, MODIFIER):
 		MATH_STR = f'{MATH_STR}) - {abs(MODIFIER)}'
 	return MATH_STR
 
+def number_valid(INPUT_NUM):
+	if INPUT_NUM < 1 or INPUT_NUM > sys.maxsize:
+		return False
+	else:
+		return True
+
 @BOT.command(name='roll', help='Rolls dice!\n\n(Format: [number_of_dice]d[number_of_sides] OR [disadvantage|dis|d] OR [advantage|adv|a])', aliases=['r', 'R'])
 async def roll_dice(CTX, *DICE):
 	REQUEST_USR = CTX.author
@@ -99,6 +106,8 @@ async def roll_dice(CTX, *DICE):
 		DICE_VALUES = split_dice_string(DICE[0])
 		if not DICE_VALUES:
 			RESPONSE = f'{REQUEST_USR.mention} needs to learn how to give the correct parameters. ("**{DICE[0]}**" is not valid parameter)'
+		elif number_valid(DICE_VALUES[0]) or number_valid(DICE_VALUES[1]):
+			RESPONSE = f'{REQUEST_USR.mention} needs to pick better numbers. ("**{DICE[0]}**" is outside of the valid range)'
 		else:
 			DICE_RESULT = dice_roll(DICE_VALUES[0], DICE_VALUES[1])
 			DICE_TOTAL = sum(DICE_RESULT) + DICE_VALUES[2]
