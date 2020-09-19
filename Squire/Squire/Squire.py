@@ -12,7 +12,7 @@ def log(MESSAGE):
 	TIMESTAMP = f'{LOCAL_TIME.tm_year}-{LOCAL_TIME.tm_mon}-{LOCAL_TIME.tm_mday} {LOCAL_TIME.tm_hour}:{LOCAL_TIME.tm_min}:{LOCAL_TIME.tm_sec}'
 	print(f'{TIMESTAMP} {MESSAGE}')
 
-VERSION = '1.3'
+VERSION = '1.4-DEV'
 log(f"You're running Squire Discord Bot Version {VERSION}")
 
 log('Loading enviroment variables')
@@ -90,7 +90,7 @@ async def roll_dice(CTX, *DICE):
 	elif DICE[0].lower() == 'dis' or DICE[0].lower() == 'd' or DICE[0].lower() == 'disadvantage':
 		DICE_RESULT = dice_roll(2, 20)
 		DICE_RESULT.sort(reverse=True)
-		RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_RESULT[0]}** at **disadvantage**. [~~{DICE_RESULT[0]}~~, {DICE_RESULT[1]}]'
+		RESPONSE = f'{REQUEST_USR.mention} rolled **{DICE_RESULT[1]}** at **disadvantage**. [~~{DICE_RESULT[0]}~~, {DICE_RESULT[1]}]'
 	elif DICE[0].lower() == 'adv' or DICE[0].lower() == 'a' or DICE[0].lower() == 'advantage':
 		DICE_RESULT = dice_roll(2, 20)
 		DICE_RESULT.sort(reverse=True)
