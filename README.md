@@ -18,7 +18,7 @@ This bot has three enviroment variables. The first is used to store the Discord 
 
 `FEEDBACK_LINK={Feedback-Form-URL-Here}`
 
-Replace {Your-Token-Here} with whatever your bot token is (Found at [Discord's Developer Portal](https://discordapp.com/developers/applications)). Replace {Asset-Dir-Path-Here} with the path to the directory that will contain all of the external assets. Be sure to format it as the system you're running the script on formats it (i.e. "\" on Windows and "/" on Unix). Replace {Feedback-Form-URL-Here} with the URL of a form you'll be using to collect feedback, if you have one. I set up a simple Google Form for mine.
+Replace {Your-Token-Here} with whatever your bot token is (Found at [Discord's Developer Portal](https://discordapp.com/developers/applications)). Replace {Asset-Dir-Path-Here} with the path to the directory that will contain all of the external assets. Be sure to format it as the system you're running the script on formats it (i.e. " \ " on Windows and " / " on Unix). Replace {Feedback-Form-URL-Here} with the URL of a form you'll be using to collect feedback, if you have one. I set up a simple Google Form for mine.
 
 ### Required Files and Folders
 For the `!quote`, `!dum`, and `!yikes` commands to work you'll need to create the following files in the assets directory set in the `.env` file:
