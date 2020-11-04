@@ -25,7 +25,7 @@ FEEDBACK_LINK = os.getenv('FEEDBACK_LINK')
 log('Creating bot instance')
 BOT = commands.Bot(('!', 'squire, '))
 
-#This function randomly generates a number of values between 1 and a given number
+#This function randomly generates a number of values between 1 and a given number.
 def dice_roll(NUMBER, SIDES):
 	DICE_RESULT = [
 		int(random.choice(range(1, SIDES + 1)))
@@ -106,7 +106,7 @@ async def roll_dice(CTX, *DICE):
 		DICE_VALUES = split_dice_string(DICE[0])
 		if not DICE_VALUES:
 			RESPONSE = f'{REQUEST_USR.mention} needs to learn how to give the correct parameters. ("**{DICE[0]}**" is not valid parameter)'
-		elif number_valid(DICE_VALUES[0]) or number_valid(DICE_VALUES[1]):
+		elif not (number_valid(DICE_VALUES[0]) and number_valid(DICE_VALUES[1])):
 			RESPONSE = f'{REQUEST_USR.mention} needs to pick better numbers. ("**{DICE[0]}**" is outside of the valid range)'
 		else:
 			DICE_RESULT = dice_roll(DICE_VALUES[0], DICE_VALUES[1])
@@ -195,7 +195,7 @@ async def feedback(CTX):
 	log(f'Running the feedback command for {REQUEST_USR}')
 
 	RESPONSE = f'Got feedback for Squire? You can sumbit it at the following link: {FEEDBACK_LINK}'
-	await CTX.send(RESPONSE);
+	await CTX.send(RESPONSE)
 
 @BOT.event
 async def on_ready():
