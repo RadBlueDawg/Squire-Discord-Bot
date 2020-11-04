@@ -21,6 +21,8 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 ASSET_DIR = os.getenv('ASSET_DIRECTORY')
 FEEDBACK_LINK = os.getenv('FEEDBACK_LINK')
+DICE_NUM_MAX = 100 #One hundred dice per roll should be plenty for any actual use case
+DICE_SIZE_MAX = 1000000000 #If you need a dice with more than 1 billion size, go write your own bot
 
 log('Creating bot instance')
 BOT = commands.Bot(('!', 'squire, '))
@@ -82,8 +84,8 @@ def create_dice_math_str(ROLL_ARRAY, MODIFIER):
 		MATH_STR = f'{MATH_STR}) - {abs(MODIFIER)}'
 	return MATH_STR
 
-def number_valid(INPUT_NUM):
-	if INPUT_NUM < 1 or INPUT_NUM > sys.maxsize:
+def number_valid(INPUT_NUM, MAX_SIZE):
+	if INPUT_NUM < 1 or INPUT_NUM > MAX_SIZE:
 		return False
 	else:
 		return True
@@ -106,8 +108,10 @@ async def roll_dice(CTX, *DICE):
 		DICE_VALUES = split_dice_string(DICE[0])
 		if not DICE_VALUES:
 			RESPONSE = f'{REQUEST_USR.mention} needs to learn how to give the correct parameters. ("**{DICE[0]}**" is not valid parameter)'
-		elif not (number_valid(DICE_VALUES[0]) and number_valid(DICE_VALUES[1])):
-			RESPONSE = f'{REQUEST_USR.mention} needs to pick better numbers. ("**{DICE[0]}**" is outside of the valid range)'
+		elif not number_valid(DICE_VALUES[0], DICE_NUM_MAX):
+			RESPONSE = f'{REQUEST_USR.mention} needs to pick better numbers. ("**{DICE[0]}**" is outside of the valid range, the number of dice should be smaller than **{DICE_NUM_MAX}**)'
+		elif not number_valid(DICE_VALUES[1], DICE_SIZE_MAX):
+			RESPONSE = f'{REQUEST_USR.mention} needs to pick better numbers. ("**{DICE[0]}**" is outside of the valid range, the number of sides should be smaller than **{DICE_SIZE_MAX}**)'
 		else:
 			DICE_RESULT = dice_roll(DICE_VALUES[0], DICE_VALUES[1])
 			DICE_TOTAL = sum(DICE_RESULT) + DICE_VALUES[2]
