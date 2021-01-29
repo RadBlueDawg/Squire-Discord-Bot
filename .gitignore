@@ -341,3 +341,4 @@ healthchecksdb
 *.env
 /Squire/Squire/Assets
 *.txt
+*.db

@@ -3,6 +3,8 @@ import os
 import random
 import time
 import discord
+import sqlite3 as sl
+import DatabaseManager
 
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -26,11 +28,14 @@ ASSET_DIR = os.getenv('ASSET_DIRECTORY')
 FEEDBACK_LINK = os.getenv('FEEDBACK_LINK')
 DICE_NUM_MAX = 100 #One hundred dice per roll should be plenty for any actual use case
 DICE_SIZE_MAX = 1000000000 #If you need a dice with more than 1 billion size, go write your own bot
+console_log('Loading database')
+DATA = DatabaseManager.Squire_Data()
 
 console_log('Creating bot instance')
 BOT = commands.Bot(('!', 'squire, '))
 
-#This function randomly generates a number of values between 1 and a given number.
+#This function randomly generates a number of values between 1 and a given
+#number.
 def dice_roll(NUMBER, SIDES):
 	DICE_RESULT = [
 		int(random.choice(range(1, SIDES + 1)))
@@ -70,7 +75,8 @@ def split_dice_string(DICE_STR):
 
 	return [DICE_NUM, DICE_SIDES, DICE_MOD]
 
-#This function takes an array of integers and a modifier and formats them into a nice string
+#This function takes an array of integers and a modifier and formats them into
+#a nice string
 def create_dice_math_str(ROLL_ARRAY, MODIFIER):
 	MATH_STR = f'({ROLL_ARRAY[0]}'
 
@@ -125,17 +131,21 @@ async def roll_dice(CTX, *DICE):
 @BOT.command(name='quote', help='Either adds or reads off a random quote.\n\nYou can call the command alone to have Squire read off a quote, or follow the command with a phrase to add it to the list of quotes.', aliases=['q', 'Q'])
 async def quote(CTX, *QUOTE):
 	REQUEST_USR = CTX.author
+	REQUEST_SERVER = CTX.guild
 	console_log(f'Running the quote command for {REQUEST_USR}')
 
-	if not QUOTE:
-		with open(f'{ASSET_DIR}/Quotes.txt', 'r') as f:
-			LINES = f.read().splitlines()
-			SELECTED_INDEX = random.choice(range(0, len(LINES)))
-			RESPONSE = LINES[SELECTED_INDEX]
+	if REQUEST_SERVER is None:
+		RESPONSE = "You can't use the quote command in a direct message chat!"
+	elif not QUOTE:
+		QUOTES = DATA.getQuotes(REQUEST_SERVER.id)
+		if len(QUOTES) == 0:
+			RESPONSE = "No quotes have been added to on this server yet!"
+		else:
+			SELECTED_INDEX = random.choice(range(0, len(QUOTES)))
+			RESPONSE = QUOTES[SELECTED_INDEX][0]
 	else:
 		QUOTE_TEXT = ' '.join(QUOTE)
-		with open(f'{ASSET_DIR}/Quotes.txt', 'a') as f:
-			f.write(f'\n{QUOTE_TEXT}')
+		DATA.addQuote(REQUEST_SERVER.id, REQUEST_USR.id, QUOTE_TEXT)
 		RESPONSE = f'Added the quote "{QUOTE_TEXT}" to the list!' 
 
 	await CTX.send(RESPONSE)
