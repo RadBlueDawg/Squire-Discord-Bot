@@ -209,7 +209,7 @@ async def roll_stats(CTX, *NUMBER):
 @BOT.command(name='feedback', help='Replies with the feedback link.\n\nUse the link to report any bugs or request a feature.', aliases=['fb', 'FB'])
 async def feedback(CTX):
 	REQUEST_USR = CTX.author
-	cosnole_log(f'Running the feedback command for {REQUEST_USR}')
+	console_log(f'Running the feedback command for {REQUEST_USR}')
 
 	RESPONSE = f'Got feedback for Squire? You can sumbit it at the following link: {FEEDBACK_LINK}'
 	await CTX.send(RESPONSE)
