@@ -1,4 +1,9 @@
 # Changelog
+## v1.4
+* Fixed a log issue where runnning the `!roll disadvantage` command would display the higher number instead of the lower one
+* Added limits to the number of dice and the number of sides for the `!roll` and `!rollstats` commands
+* Changed the `!quote` command to be server unique
+
 ## v1.3
 * Added the `!feedback` command
 * Added a display for the current version of Squire being run

@@ -4,13 +4,15 @@
 The Squire bot for discord is something I put together for usage on my own personal D&D discord server. This README details the different commands that are available and the setup required if you want to run this bot for yourself.
 
 ## Setup
+To install Squire, all you need to do is download the Squire.py and DatabaseManager.py python files and put them in a folder of your choosing. You only need to run the Squire.py file for Squire to start, but before the bot script will be able to run you'll need to follow the additional steps in the sections below.
+
 ### Dependencies
 Before the bot script can be run, you need to make sure the computer you're running it on has Python 3.7 installed. You will also need to install the following packages:
 - python-dotenv (0.14.0 or greater)
 - discord.py (1.3.4 or greater)
 
 ### Enviroment Variables
-This bot has three enviroment variables. The first is used to store the Discord bot token for authentication purposes, while the second is the path to the folder containing the assets for the commands that require external files. All you need to do to get this to run properly is include a file called ".env" in the same directory as the python file with the following text inside it:
+This bot has three enviroment variables. The first is used to store the Discord bot token for authentication purposes, while the second is the path to the folder containing the assets for the commands that require external files. All you need to do to get this to run properly is include a file called ".env" in the same directory as the python files with the following text inside it:
 
 `DISCORD_TOKEN={Your-Token-Here}`
 
@@ -21,8 +23,7 @@ This bot has three enviroment variables. The first is used to store the Discord 
 Replace {Your-Token-Here} with whatever your bot token is (Found at [Discord's Developer Portal](https://discordapp.com/developers/applications)). Replace {Asset-Dir-Path-Here} with the path to the directory that will contain all of the external assets. Be sure to format it as the system you're running the script on formats it (i.e. " \ " on Windows and " / " on Unix). Replace {Feedback-Form-URL-Here} with the URL of a form you'll be using to collect feedback, if you have one. I set up a simple Google Form for mine.
 
 ### Required Files and Folders
-For the `!quote`, `!dum`, and `!yikes` commands to work you'll need to create the following files in the assets directory set in the `.env` file:
-- Quotes.txt
+For the `!dum` and `!yikes` commands to work you'll need to create the following files in the assets directory set in the `.env` file:
 - DumQuotes.txt
 - YikesQuotes.txt
 
@@ -45,7 +46,7 @@ The bot will respond with a message that includes the URL to the feedback form s
 Outputs help text for each of the commands. Whatever Discord automagically puts together.
 
 ### quote|q|Q *[quote-text]*
-The bot will either pull a random quote from a text file, or add a specified quote to the text file.
+The bot will either pull a random quote from  or add a specified quote to a database created by the script.
 
 ### roll|r|R [number-of-dice]d[sides-on-dice]*[modifier]* OR [disadvantage|dis|d] OR [advantage|adv|a]
 This is a dice roller command. Format the parameter like you would usually see dice typed out (ex. 1d20, 8d8+6, 2d6-4, etc.). The command can additionally roll two d20s with advantage or disadvantage, depending on which is specified.
