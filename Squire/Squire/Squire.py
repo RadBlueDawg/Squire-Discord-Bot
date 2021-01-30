@@ -186,24 +186,26 @@ async def roll_stats(CTX, *NUMBER):
 	else:
 		NUM_DICE = int(NUMBER[0])
 
-	RESPONSE = ''
-	COUNT = 0
-	while(COUNT < NUM_DICE):
-		DICE_RESULT = dice_roll(4, 6)
-		DICE_RESULT.sort(reverse=True)
-		DICE_TOTAL = int(DICE_RESULT[0]) + int(DICE_RESULT[1]) + int(DICE_RESULT[2])
-		RESPONSE += f'{DICE_TOTAL} ['
-		ROLL_COUNT = 1
-		for ROLL in DICE_RESULT:
-			if ROLL_COUNT == 4:
-				ROLL = f'~~{ROLL}~~]\n'
-			else:
-				ROLL = f'{ROLL}, '
-			RESPONSE += ROLL
-			ROLL_COUNT += 1
+	if number_valid(NUM_DICE, DICE_NUM_MAX):
+		RESPONSE = ''
+		COUNT = 0
+		while(COUNT < NUM_DICE):
+			DICE_RESULT = dice_roll(4, 6)
+			DICE_RESULT.sort(reverse=True)
+			DICE_TOTAL = int(DICE_RESULT[0]) + int(DICE_RESULT[1]) + int(DICE_RESULT[2])
+			RESPONSE += f'{DICE_TOTAL} ['
+			ROLL_COUNT = 1
+			for ROLL in DICE_RESULT:
+				if ROLL_COUNT == 4:
+					ROLL = f'~~{ROLL}~~]\n'
+				else:
+					ROLL = f'{ROLL}, '
+				RESPONSE += ROLL
+				ROLL_COUNT += 1
 
-		COUNT += 1
-
+			COUNT += 1
+	else:
+		RESPONSE = f'{REQUEST_USR.mention} needs to pick better numbers. ("**{NUM_DICE}**" is outside of the valid range, the number of stats rolls should be smaller than **{DICE_NUM_MAX}**)'
 	await CTX.send(RESPONSE)
 
 @BOT.command(name='feedback', help='Replies with the feedback link.\n\nUse the link to report any bugs or request a feature.', aliases=['fb', 'FB'])
