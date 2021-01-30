@@ -27,7 +27,7 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 ASSET_DIR = os.getenv('ASSET_DIRECTORY')
 FEEDBACK_LINK = os.getenv('FEEDBACK_LINK')
 DICE_NUM_MAX = 100 #One hundred dice per roll should be plenty for any actual use case
-DICE_SIZE_MAX = 1000000000 #If you need a dice with more than 1 billion size, go write your own bot
+DICE_SIZE_MAX = 1000000000 #If you need a dice with more than 1 billion sides, go write your own bot
 console_log('Loading database')
 DATA = DatabaseManager.Squire_Data()
 
