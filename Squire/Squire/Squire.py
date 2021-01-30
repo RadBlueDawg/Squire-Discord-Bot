@@ -18,7 +18,7 @@ def console_log(MESSAGE):
 	LOG_MESSAGE = f'{current_timestamp()} {MESSAGE}'
 	print(LOG_MESSAGE)
 
-VERSION = '1.4-DEV'
+VERSION = '1.4'
 console_log(f"You're running Squire Discord Bot Version {VERSION}")
 
 console_log('Loading enviroment variables')
