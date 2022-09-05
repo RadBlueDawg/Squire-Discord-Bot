@@ -18,7 +18,7 @@ def console_log(MESSAGE):
 	LOG_MESSAGE = f'{current_timestamp()} {MESSAGE}'
 	print(LOG_MESSAGE)
 
-VERSION = '1.4'
+VERSION = '1.5 DEV'
 console_log(f"You're running Squire Discord Bot Version {VERSION}")
 
 console_log('Loading enviroment variables')
@@ -32,7 +32,9 @@ console_log('Loading database')
 DATA = DatabaseManager.Squire_Data()
 
 console_log('Creating bot instance')
-BOT = commands.Bot(('!', 'squire, '))
+INTENTS = discord.Intents.default()
+INTENTS.message_content = True
+BOT = commands.Bot(command_prefix=('!', 'squire, '), intents=INTENTS)
 
 #This function randomly generates a number of values between 1 and a given
 #number.
