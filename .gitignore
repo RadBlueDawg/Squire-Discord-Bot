@@ -339,6 +339,7 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 *.env
-/Squire/Squire/Assets
+/src/Assets
 *.txt
 *.db
+/.venv
