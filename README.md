@@ -5,7 +5,7 @@ The Squire bot for discord is something I put together for usage on my own perso
 To install Squire, all you need to do is download and unzip the latest release or download the source code directly. You only need to run the Squire.py file for Squire to start, but before the bot script will be able to run you'll need to follow the additional steps in the sections below.
 
 ### Dependencies
-Before the bot script can be run, you need to make sure the computer you're running it on has Python 3.9 installed. I'd recommend (setting up a Python virtual environment)[https://docs.python.org/3/library/venv.html] in the folder you'll be hosting Squire in. Once you have the virtual environment setup, run `pip install -r requirements.txt` to install the required dependencies.
+Before the bot script can be run, you need to make sure the computer you're running it on has Python 3.9 installed. I'd recommend [setting up a Python virtual environment](https://docs.python.org/3/library/venv.html) in the folder you'll be hosting Squire in. Once you have the virtual environment setup, run `pip install -r requirements.txt` to install the required dependencies.
 
 ### Enviroment Variables
 In the same folder as the one holding `Squire.py`, create a file called `.env` with the following variables in it:
