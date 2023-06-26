@@ -64,6 +64,14 @@ async def self(interaction: discord.Interaction, new_quote: str = None):
             selectedQuoteIndex = random.choice(range(0, len(availableQuotes)))
             await interaction.response.send_message(availableQuotes[selectedQuoteIndex][0])
 
+@SQUIRE.tree.command(name="roll", description="Roll the dice!")
+async def self(interaction: discord.Interaction):
+    await interaction.response.send_message("WIP", ephemeral=True)
+
+@SQUIRE.tree.command(name="roll-stats", description="Rolls 4d6 and adds the highest 3 together. By default a standard array of 6 are rolled.")
+async def self(interaction: discord.Interaction):
+        await interaction.response.send_message("WIP", ephemeral=True)    
+
 @SQUIRE.tree.command(name="yikes", description="For when something yikes-able has occured.")
 async def self(interaction: discord.Interaction):
     yikesFile = get_random_line_from_file(f"{ASSET_DIR}/YikesQuotes.txt")

@@ -1,6 +1,4 @@
 # Squire-Discord-Bot
-[![BCH compliance](https://bettercodehub.com/edge/badge/RadBlueDawg/Squire-Discord-Bot?branch=master)](https://bettercodehub.com/)
-
 The Squire bot for discord is something I put together for usage on my own personal D&D discord server. This README details the different commands that are available and the setup required if you want to run this bot for yourself.
 
 ## Setup
