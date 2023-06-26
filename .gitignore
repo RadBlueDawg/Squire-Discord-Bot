@@ -340,6 +340,5 @@ ASALocalRun/
 healthchecksdb
 *.env
 /src/Assets
-*.txt
 *.db
 /.venv
