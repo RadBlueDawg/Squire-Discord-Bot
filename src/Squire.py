@@ -9,7 +9,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 from Helpers import *
 
-VERSION = "2.0-alpha"
+VERSION = "2.0"
 console_log(f"You're running Squire Discord Bot version {VERSION}")
 
 console_log("Loading environment variables")
