@@ -19,6 +19,32 @@ def dice_roll(NUMBER, SIDES):
 
     return diceResult
 
+def format_adv_dis_math_str(ROLL_ARRAY, MODIFIER):
+    diceMathStr = f"[({ROLL_ARRAY[0]} ~~{ROLL_ARRAY[1]}~~)"
+
+    if MODIFIER > 0:
+        diceMathStr = f"{diceMathStr} + {MODIFIER}"
+    elif MODIFIER < 0:
+        diceMathStr = f"{diceMathStr} - {abs(MODIFIER)}"
+
+    return f"{diceMathStr}]"
+
+def format_dice_math_str(ROLL_ARRAY, MODIFIER):
+    diceMathStr = f"({ROLL_ARRAY[0]}"
+    
+    diceCount = 1
+    while (diceCount < len(ROLL_ARRAY)):
+        diceMathStr = f"{diceMathStr} + {ROLL_ARRAY[diceCount]}"
+        diceCount += 1
+    
+    diceMathStr = f"{diceMathStr})"
+    if MODIFIER > 0:
+        diceMathStr = f"{diceMathStr} + {MODIFIER}"
+    elif MODIFIER < 0:
+        diceMathStr = f"{diceMathStr} - {abs(MODIFIER)}"
+
+    return diceMathStr
+
 def get_random_line_from_file(FILE_PATH):
     with open(FILE_PATH, 'r') as f:
         allLines = f.read().splitlines()
@@ -27,7 +53,3 @@ def get_random_line_from_file(FILE_PATH):
 
 def number_valid(INPUT_NUM, MAX_SIZE):
     return INPUT_NUM > 0 and INPUT_NUM <= MAX_SIZE
-    #if INPUT_NUM < 1 or INPUT_NUM > MAX_SIZE:
-    #    return False
-    #else:
-    #    return True
