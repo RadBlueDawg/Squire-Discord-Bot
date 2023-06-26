@@ -1,4 +1,10 @@
 # Changelog
+## v2.0
+* Completely rewrote Squire to use the latest version of the `Discord.py` api
+* Split out rolling with advantage/disadvantage into their own separate commands
+* Added the ability to apply modifiers to advantage/disadvantage rolls
+* Added a `requirements.txt` file to better track dependencies and make installation easier
+
 ## v1.4
 * Fixed a log issue where runnning the `!roll disadvantage` command would display the higher number instead of the lower one
 * Added limits to the number of dice and the number of sides for the `!roll` and `!rollstats` commands
